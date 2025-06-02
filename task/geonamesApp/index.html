@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GeoNames API App</title>
+  <link rel="stylesheet" href="libs/css/style.css"> 
+
+  
+</head>
+<body>
+
+<div id="preloader"></div>
+
+<table>
+  <tr>
+    <th>API name</th>
+    <th>API description</th>
+    <th></th>
+  </tr>
+  <tr>
+    <td>1. Timezone</td>
+    <td>
+      <input type="text" id="lat1" placeholder="Latitude" />
+      <input type="text" id="lng1" placeholder="Longitude" />
+    </td>    <td><button id="btn1">Submit</button></td>
+  </tr>
+  <tr>
+    <td>2. Nearby Postal Codes</td>
+    <td>
+     <input type="text" id="lat2"  placeholder="Latitude" />
+     <input type="text" id="lng2"  placeholder="Longitude" />
+    </td>
+    <td><button id="btn2">Submit</button></td>
+  </tr>
+    
+  <tr>
+    <td>3. Wikipedia Search</td>
+    <td>
+    <input type="text" id="query3" placeholder="Query e.g. Madrid">
+    </td>
+    <td><button id="btn3">Submit</button></td>
+  </tr>
+    <tr>
+    <td></td>
+   
+    <td>
+        <div id="results">
+          <h2>RESULTS</h2>
+          <pre id="output"></pre>
+        </div>
+        </td>
+  </tr>
+</table>
+  <script  src ="libs/js/jquery-2.2.3.min.js"></script>
+<script src="libs/js/main.js"></script>
+
+</body>
+</html>
