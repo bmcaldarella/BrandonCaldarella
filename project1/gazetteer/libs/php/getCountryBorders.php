@@ -16,4 +16,10 @@ if (!isset($data['features'])) {
     exit;
 }
 
+foreach ($data['features'] as &$feature) {
+    if (isset($feature['properties']['name'])) {
+        $feature['properties']['name'] = rtrim($feature['properties']['name'], '.');
+    }
+}
+
 echo json_encode($data);

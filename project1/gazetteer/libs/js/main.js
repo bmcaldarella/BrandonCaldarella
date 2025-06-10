@@ -513,7 +513,7 @@ $(document).ready(function () {
 
 map.fitBounds(borderLayer.getBounds(), {
   padding: [50, 50],
-  maxZoom: 7 // Ajustable: subilo si querés más detalle en países pequeños
+  maxZoom: 7 
 });
 
     if (capitalMarker) {
