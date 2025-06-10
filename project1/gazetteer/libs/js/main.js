@@ -492,7 +492,13 @@ $(document).ready(function () {
 
     let lat, lon;
 
-    if (selectedFeature.properties && selectedFeature.properties.capital_latlng) {
+    if (
+      selectedFeature.properties &&
+      Array.isArray(selectedFeature.properties.capital_latlng) &&
+      selectedFeature.properties.capital_latlng.length === 2 &&
+      !isNaN(selectedFeature.properties.capital_latlng[0]) &&
+      !isNaN(selectedFeature.properties.capital_latlng[1])
+    ) {
       lat = selectedFeature.properties.capital_latlng[1]; // lat
       lon = selectedFeature.properties.capital_latlng[0]; // lon
     } else {
@@ -505,11 +511,10 @@ $(document).ready(function () {
     window.selectedLon = lon;
     window.selectedCountryCode = selectedISO;
 
-    map.panTo([lat, lon], {
-      animate: true,
-      duration: 1.5
-    });
-
+map.fitBounds(borderLayer.getBounds(), {
+  padding: [50, 50],
+  maxZoom: 7 // Ajustable: subilo si querés más detalle en países pequeños
+});
 
     if (capitalMarker) {
       map.removeLayer(capitalMarker);
@@ -532,10 +537,6 @@ $(document).ready(function () {
       if (poiClusterGroup.getLayers().length > 0) {
         const group = new L.featureGroup(poiClusterGroup.getLayers());
         const bounds = group.getBounds();
-        map.fitBounds(bounds, {
-          maxZoom: 7,
-          padding: [50, 50]
-        });
       }
     }, 1000);
   });
