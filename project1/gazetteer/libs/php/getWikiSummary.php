@@ -7,9 +7,8 @@ if (!isset($_GET['country'])) {
     exit;
 }
 
-$country = urlencode($_GET['country']);
-$url = "https://en.wikipedia.org/api/rest_v1/page/summary/$country";
-
+$country = str_replace(' ', '_', $_GET['country']);
+$url = "https://en.wikipedia.org/api/rest_v1/page/summary/" . urlencode($country);
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);

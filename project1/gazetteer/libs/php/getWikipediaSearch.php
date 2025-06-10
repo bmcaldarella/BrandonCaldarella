@@ -7,7 +7,7 @@ if (!isset($_GET['country'])) {
     exit;
 }
 
-$country = urlencode($_GET['country']);
+$country = urlencode(urldecode($_GET['country']));
 $url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=top+attractions+in+{$country}&format=json&origin=*&srlimit=100";
 
 $ch = curl_init();

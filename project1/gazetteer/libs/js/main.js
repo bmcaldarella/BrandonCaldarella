@@ -33,7 +33,7 @@ function detectUserCountry(lat, lon) {
 
 function loadCountriesIntoSelect(callback) {
   $.ajax({
-    url: "libs/php/getCountryBorders.php", 
+    url: "libs/php/getCountryBorders.php",
     dataType: "json",
     success: function (data) {
       countriesLoaded = true;
@@ -145,7 +145,7 @@ $(document).ready(function () {
     }),
 
   };
-  $('#loader').fadeIn(200); 
+  $('#loader').fadeIn(200);
 
   loadCountriesIntoSelect(() => {
     if (navigator.geolocation) {
@@ -158,19 +158,19 @@ $(document).ready(function () {
           window.selectedLon = lon;
 
           detectUserCountry(lat, lon);
-          initMap([lat, lon], true); 
+          initMap([lat, lon], true);
           $('#map').fadeIn(300);
           $('#loader').fadeOut(500);
         },
         function (error) {
           console.warn("Geolocation error:", error.message);
-          initMap([20, 0], false); 
+          initMap([20, 0], false);
           $('#map').fadeIn(300);
           $('#loader').fadeOut(500);
         }
       );
     } else {
-      initMap([20, 0], false); 
+      initMap([20, 0], false);
       $('#map').fadeIn(300);
       $('#loader').fadeOut(500);
     }
@@ -304,7 +304,7 @@ $(document).ready(function () {
       attribution: '&copy; OpenStreetMap &copy; CARTO'
     });
 
-    ligthMode.addTo(map); 
+    ligthMode.addTo(map);
 
     const baseMaps = {
       "🌞 Light": ligthMode,
@@ -376,17 +376,17 @@ $(document).ready(function () {
 
             $('#countrySelect').val(countryCode);
 
-           console.log("🧭 City:", city);
-           if (city) {
-  mostrarLimiteCiudad(city);
-  if (countryName) {
-  mostrarLugaresWikipedia(countryName);
-}
+            console.log("🧭 City:", city);
+            if (city) {
+              mostrarLimiteCiudad(city);
+              if (countryName) {
+                mostrarLugaresWikipedia(countryName);
+              }
 
 
-} else {
-  console.warn("No city name available, skipping city boundary display.");
-}
+            } else {
+              console.warn("No city name available, skipping city boundary display.");
+            }
 
           } else {
             alert("No nearby places found.");
@@ -530,12 +530,12 @@ $(document).ready(function () {
 
     setTimeout(() => {
       if (poiClusterGroup.getLayers().length > 0) {
-      const group = new L.featureGroup(poiClusterGroup.getLayers());
-      const bounds = group.getBounds();
+        const group = new L.featureGroup(poiClusterGroup.getLayers());
+        const bounds = group.getBounds();
         map.fitBounds(bounds, {
-      maxZoom: 7,
-      padding: [50, 50] 
-    });
+          maxZoom: 7,
+          padding: [50, 50]
+        });
       }
     }, 1000);
   });
