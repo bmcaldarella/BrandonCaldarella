@@ -1,37 +1,36 @@
 let detectedCountryCode = null;
 let countryBordersData;
-let poiClusterGroup = L.markerClusterGroup();
 let map;
-let capitalGroup = L.layerGroup();
-let airportGroup = L.layerGroup();
-let townGroup = L.layerGroup();
-let museumGroup = L.layerGroup();
-let monumentGroup = L.layerGroup();
-let churchGroup = L.layerGroup();
-let parkGroup = L.layerGroup();
-let hotelGroup = L.layerGroup();
-let beachGroup = L.layerGroup();
-let trainGroup = L.layerGroup();
-let busGroup = L.layerGroup();
-let restaurantGroup = L.layerGroup();
-let cafeGroup = L.layerGroup();
-let barGroup = L.layerGroup();
-let universityGroup = L.layerGroup();
-let stadiumGroup = L.layerGroup();
-let hospitalGroup = L.layerGroup();
-let pharmacyGroup = L.layerGroup();
-let shoppingGroup = L.layerGroup();
-let supermarketGroup = L.layerGroup();
-let policeGroup = L.layerGroup();
-let firestationGroup = L.layerGroup();
-let gasGroup = L.layerGroup();
-let bankGroup = L.layerGroup();
-let atmGroup = L.layerGroup();
-let embassyGroup = L.layerGroup();
-let postGroup = L.layerGroup();
-let libraryGroup = L.layerGroup();
-let cinemaGroup = L.layerGroup();
-let defaultGroup = L.layerGroup();
+let capitalGroup = L.markerClusterGroup();
+let airportGroup = L.markerClusterGroup();
+let townGroup = L.markerClusterGroup();
+let museumGroup = L.markerClusterGroup();
+let monumentGroup = L.markerClusterGroup();
+let churchGroup = L.markerClusterGroup();
+let parkGroup = L.markerClusterGroup();
+let hotelGroup = L.markerClusterGroup();
+let beachGroup = L.markerClusterGroup();
+let trainGroup = L.markerClusterGroup();
+let busGroup = L.markerClusterGroup();
+let restaurantGroup = L.markerClusterGroup();
+let cafeGroup = L.markerClusterGroup();
+let barGroup = L.markerClusterGroup();
+let universityGroup = L.markerClusterGroup();
+let stadiumGroup = L.markerClusterGroup();
+let hospitalGroup = L.markerClusterGroup();
+let pharmacyGroup = L.markerClusterGroup();
+let shoppingGroup = L.markerClusterGroup();
+let supermarketGroup = L.markerClusterGroup();
+let policeGroup = L.markerClusterGroup();
+let firestationGroup = L.markerClusterGroup();
+let gasGroup = L.markerClusterGroup();
+let bankGroup = L.markerClusterGroup();
+let atmGroup = L.markerClusterGroup();
+let embassyGroup = L.markerClusterGroup();
+let postGroup = L.markerClusterGroup();
+let libraryGroup = L.markerClusterGroup();
+let cinemaGroup = L.markerClusterGroup();
+let defaultGroup = L.markerClusterGroup();
 
 
 
@@ -156,14 +155,13 @@ function loadCountriesIntoSelect(callback) {
 function mostrarLugaresWikipedia(countryName) {
   const allGroups = [
     capitalGroup, airportGroup, townGroup, museumGroup, monumentGroup, churchGroup,
-    parkGroup, hotelGroup, beachGroup, trainGroup, busGroup, restaurantGroup, cafeGroup,
-    barGroup, universityGroup, stadiumGroup, hospitalGroup, pharmacyGroup, shoppingGroup,
-    supermarketGroup, policeGroup, firestationGroup, gasGroup, bankGroup, atmGroup,
-    embassyGroup, postGroup, libraryGroup, cinemaGroup, defaultGroup
+    parkGroup, hotelGroup, beachGroup, trainGroup, busGroup, restaurantGroup,
+    stadiumGroup, hospitalGroup, shoppingGroup,
+    supermarketGroup, firestationGroup, gasGroup, bankGroup,
+    embassyGroup, postGroup, defaultGroup
   ];
 
   // adding the cluster group to the map
-  map.addLayer(poiClusterGroup);
 
   $.ajax({
     url: 'libs/php/getWikipediaSearch.php',
@@ -212,32 +210,12 @@ function mostrarLugaresWikipedia(countryName) {
                 capital: ["capital", "government"],
                 airport: ["airport", "airfield"],
                 town: ["town", "village"],
-                museum: ["museum", "gallery"],
                 monument: ["monument", "castle", "bridge", "palace", "tower"],
                 church: ["church", "cathedral", "basilica"],
-                park: ["park", "garden", "reserve"],
                 hotel: ["hotel", "hostel", "motel"],
-                beach: ["beach", "coast"],
-                train: ["train station", "railway"],
-                bus: ["bus station", "bus terminal"],
-                restaurant: ["restaurant", "diner", "bistro"],
-                cafe: ["cafe", "coffee"],
-                bar: ["bar", "pub"],
-                university: ["university", "college"],
-                stadium: ["stadium", "arena"],
-                hospital: ["hospital", "clinic"],
-                pharmacy: ["pharmacy", "drugstore"],
-                shopping: ["shopping", "mall", "store"],
-                supermarket: ["supermarket", "grocery"],
                 police: ["police", "station"],
-                firestation: ["fire station", "firehouse"],
-                gas: ["gas station", "petrol"],
                 bank: ["bank"],
-                atm: ["atm", "cash machine"],
-                embassy: ["embassy", "consulate"],
                 post: ["post office", "mail"],
-                library: ["library"],
-                cinema: ["cinema", "movie theater"]
               };
 
               const allText = (title + " " + description).toLowerCase();
@@ -275,7 +253,6 @@ function mostrarLugaresWikipedia(countryName) {
 
               const targetGroup = groupMap[tipo] || defaultGroup;
               targetGroup.addLayer(marker);
-              poiClusterGroup.addLayer(marker);
             }
           });
 
@@ -338,18 +315,27 @@ $(document).ready(function () {
               initMap([lat, lon], true);
               $('#map').fadeIn(300);
               $('#loader').fadeOut(500);
+              setTimeout(() => {
+                document.body.classList.remove("loading");
+              }, 500);
             },
             function (error) {
               console.warn("Geolocation error:", error.message);
               initMap([20, 0], false);
               $('#map').fadeIn(300);
               $('#loader').fadeOut(500);
+              setTimeout(() => {
+                document.body.classList.remove("loading");
+              }, 500);
             }
           );
         } else {
           initMap([20, 0], false);
           $('#map').fadeIn(300);
           $('#loader').fadeOut(500);
+          setTimeout(() => {
+            document.body.classList.remove("loading");
+          }, 500);
         }
       });
     },
@@ -359,90 +345,6 @@ $(document).ready(function () {
   });
 
 
-
-  // show my current location
-
-  $("#myLocationBtn").on("click", function () {
-    if (!map) {
-      alert("Map not loaded.");
-      return;
-    }
-
-    $("#loader").fadeIn(200);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-
-        window.selectedLat = lat;
-        window.selectedLon = lon;
-
-        if (!countriesLoaded) {
-          loadCountriesIntoSelect(() => {
-            setTimeout(() => {
-              detectUserCountry(lat, lon);
-            }, 120);
-          });
-        } else {
-          detectUserCountry(lat, lon);
-        }
-
-
-
-        $.ajax({
-          url: 'libs/php/getOpenCageInfo.php',
-          method: 'GET',
-          data: { lat, lon },
-          dataType: 'json',
-          success: function (data) {
-            let cityName = '';
-            if (data.results && data.results.length > 0) {
-              cityName = data.results[0].components.city ||
-                data.results[0].components.town ||
-                data.results[0].components.village ||
-                data.results[0].components.county ||
-                'Unknown location';
-            }
-
-            map.flyTo([lat, lon], 13, {
-              animate: true,
-              duration: 1.5
-            });
-
-            map.addLayer(poiClusterGroup);
-
-            if (window.locationMarker) map.removeLayer(window.locationMarker);
-            if (window.locationCircle) map.removeLayer(window.locationCircle);
-
-
-            window.locationCircle = L.circle([lat, lon], {
-              color: '#4A90E2',
-              fillColor: '#4A90E2',
-              fillOpacity: 0.3,
-              radius: 1000
-            }).addTo(map)
-              .bindPopup(`<strong>📍 You're somewhere inside this 30 km area</strong>`)
-              .openPopup();;
-
-            $("#loader").fadeOut(500);
-          },
-          error: function () {
-            console.warn("❌ Error.");
-            $("#loader").fadeOut(500);
-          }
-        });
-
-      }, function (error) {
-        alert("Error: " + error.message);
-        $("#loader").fadeOut(500);
-      });
-
-    } else {
-      alert("Location not supported.");
-      $("#loader").fadeOut(500);
-    }
-  });
   // Displays the boundary of a city by searching for its name in a local GeoJSON file.
   // If found, it adds the boundary to the map and adjusts the view to fit the area.
 
@@ -509,21 +411,7 @@ $(document).ready(function () {
       "Capitals": capitalGroup,
       "Airports": airportGroup,
       "Cities": townGroup,
-      "Museums": museumGroup,
-      "Monuments": monumentGroup,
       "Churches": churchGroup,
-      "Parks": parkGroup,
-      "Hotels": hotelGroup,
-      "Trains": trainGroup,
-      "Buses": busGroup,
-      "Restaurants": restaurantGroup,
-      "Cafés": cafeGroup,
-      "Bars": barGroup,
-      "Universities": universityGroup,
-      "Hospitals": hospitalGroup,
-      "Pharmacies": pharmacyGroup,
-      "Shopping": shoppingGroup,
-      "Police": policeGroup,
       "Others": defaultGroup
     };
     L.control.layers(baseMaps, overlayMaps, { position: 'topright' }).addTo(map);
@@ -595,7 +483,7 @@ $(document).ready(function () {
 
             $('#countrySelect').val(countryCode);
 
-            console.log("🧭 City:", city);
+            console.log(" City:", city);
             if (city) {
               mostrarLimiteCiudad(city);
               if (countryName) {
@@ -652,12 +540,15 @@ $(document).ready(function () {
     if (
       selectedFeature.properties &&
       Array.isArray(selectedFeature.properties.capital_latlng) &&
+
       selectedFeature.properties.capital_latlng.length === 2 &&
       !isNaN(selectedFeature.properties.capital_latlng[0]) &&
       !isNaN(selectedFeature.properties.capital_latlng[1])
     ) {
       lat = selectedFeature.properties.capital_latlng[1]; // lat
       lon = selectedFeature.properties.capital_latlng[0]; // lon
+      window.selectedCapital = selectedFeature.properties.capital || 'Capital';
+
     } else {
       const center = borderLayer.getBounds().getCenter();
       lat = center.lat;
@@ -667,6 +558,21 @@ $(document).ready(function () {
     window.selectedLat = lat;
     window.selectedLon = lon;
     window.selectedCountryCode = selectedISO;
+
+    $.ajax({
+      url: "libs/php/getCountryInfo.php",
+      type: "GET",
+      data: { code: selectedISO },
+      dataType: "json",
+      success: function (data) {
+        const country = data[0];
+        window.selectedCapital = country.capital ? country.capital[0] : 'Capital';
+      },
+      error: function () {
+        console.warn("No se pudo obtener la capital desde getCountryInfo.php");
+        window.selectedCapital = 'Capital';
+      }
+    });
 
     map.fitBounds(borderLayer.getBounds(), {
       padding: [50, 50],
@@ -700,7 +606,6 @@ $(document).ready(function () {
       dataType: "json",
       success: function (data) {
         const country = data[0];
-        const name = country.name.common;
         const currencies = country.currencies;
 
         if (!currencies) {
@@ -712,11 +617,17 @@ $(document).ready(function () {
         const currencyName = currencies[code].name;
         const symbol = currencies[code].symbol || '';
 
-        $('#currencyInfo').html(`<p><strong>${currencyName} (${code})</strong> ${symbol}</p>`);
+        $('#currencyInfo').html(`
+             <h2 class="text-center my-4">
+              <strong>${currencyName} (${code})</strong> ${symbol}
+                  </h2>
+                `);
         $('#currencyConversion').show();
 
-        $('#convertBtn').off('click').on('click', function () {
-          const amount = parseFloat($('#amountInput').val());
+        $('#amountInput').val(100);
+
+        $('#amountInput').off('input').on('input', function () {
+          const amount = parseFloat($(this).val());
           if (isNaN(amount) || amount <= 0) {
             $('#conversionResult').text("Enter a valid amount.");
             return;
@@ -737,6 +648,9 @@ $(document).ready(function () {
             }
           });
         });
+
+        // Trigger initial conversion when modal opens
+        $('#amountInput').trigger('input');
 
         const modal = new bootstrap.Modal(document.getElementById('currencyModal'));
         modal.show();
@@ -857,14 +771,24 @@ $(document).ready(function () {
         const country = weatherData.sys.country;
 
         const html = `
-        <div class="text-center mb-3">
-          <h5>${city}, ${country}</h5>
-          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" />
-          <p><strong>${description}</strong></p>
-          <p>Temp: ${temp}°C (feels like ${feelsLike}°C)</p>
-          <p>Max: ${maxTemp}°C / Min: ${minTemp}°C</p>
-        </div>
-      `;
+  <div class="text-center mb-2 mt-1">
+    <h4 class="fw-bold mb-2">${window.selectedCapital}</h4>
+  </div>
+
+  <div class="weather-today card p-2 text-center bg-dark text-white border-0">
+    <h6 class="fw-bold text-uppercase mb-1">Today</h6>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="text-start">
+        <div class="fw-semibold text-capitalize small">${description}</div>
+        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" style="width: 55px; height: 55px;" />
+      </div>
+      <div class="text-end">
+        <div class="fs-3 fw-bold">${temp}°C</div>
+      </div>
+    </div>
+  </div>
+`;
+
         $('#weather').html(html);
         const modal = new bootstrap.Modal(document.getElementById('weatherModal'));
         modal.show();
@@ -901,15 +825,19 @@ $(document).ready(function () {
           const temp = Math.round(f.main.temp);
 
           forecastHTML += `
-        <div class="mb-2 p-2 border border-secondary rounded">
-          <strong>${day}</strong><br>
-          <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${desc}" />
-          ${desc}, ${temp}°C
-        </div>
-      `;
+  <div class="text-center border rounded p-2 mx-1" style="width: 120px;">
+    <div class="fw-semibold small mb-1">${day}</div>
+    <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${desc}" class="mb-1" style="width: 50px; height: 50px;" />
+    <div class="fw-bold">${Math.round(f.main.temp_max)}°c</div>
+    <div class="text-muted small">${Math.round(f.main.temp_min)}°c</div>
+  </div>
+`;
         }
-
-        $('#forecastBody').html(forecastHTML);
+        $('#forecastBody').html(`
+  <div class="d-flex flex-nowrap overflow-auto px-1 pb-1">
+    ${forecastHTML}
+  </div>
+`);
       },
       error: function () {
         $('#forecastBody').html("<p>Error loading forecast.</p>");
@@ -977,21 +905,38 @@ $(document).ready(function () {
         const country = data[0];
         const name = country.name.common;
         const capital = country.capital ? country.capital[0] : 'N/A';
+        window.selectedCapital = capital;
+
         const population = country.population?.toLocaleString() || 'N/A';
         const region = country.region || 'N/A';
         const flag = country.flags?.svg || '';
         const languages = country.languages ? Object.values(country.languages).join(', ') : 'N/A';
 
         const html = `
-        <div style="padding: 30px; border-radius: 10px;">
-          <h3>${name}</h3>
-          <img src="${flag}" alt="${name}" style="max-width: 100%; height: auto; display: block; margin: 0 auto; object-fit: contain;" />
-          <p><strong>Capital:</strong> ${capital}</p>
-          <p><strong>Population:</strong> ${population}</p>
-          <p><strong>Region:</strong> ${region}</p>
-          <p><strong>Languages:</strong> ${languages}</p>
-        </div>
-      `;
+  <div class="p-3 bg-dark text-white rounded">
+    <h3 class="text-center mb-4">${name}</h3>
+    <img src="${flag}" alt="${name}" class="img-fluid d-block mx-auto mb-4" />
+
+    <ul class="list-group">
+      <li class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
+        <strong>Capital</strong>
+        <span>${capital}</span>
+      </li>
+      <li class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
+        <strong>Population</strong>
+        <span>${population}</span>
+      </li>
+      <li class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
+        <strong>Region</strong>
+        <span>${region}</span>
+      </li>
+      <li class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
+        <strong>Languages</strong>
+        <span>${languages}</span>
+      </li>
+    </ul>
+  </div>
+`;
 
         $('#infoCard').html(html);
         const modal = new bootstrap.Modal(document.getElementById('exampleModalCenter'));
