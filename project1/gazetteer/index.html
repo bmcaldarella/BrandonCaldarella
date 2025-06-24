@@ -21,11 +21,12 @@
   <title>Gazetteer</title>
 </head>
 
-<body>
+<body class="loading">
+
 
 
   <div class="country-select-container">
-    <select id="countrySelect">
+    <select id="countrySelect" class="form-select shadow">
       <option value="">Select Country</option>
     </select>
   </div>
@@ -35,10 +36,6 @@
     <div class="three-body__dot"></div>
   </div>
 
-
-  <!--My Location-->
-  <button id="myLocationBtn" class="custom-map-btn">
-    <i class="fa-solid fa-map-location"></i> </button>
 
 
 
@@ -57,12 +54,12 @@
       <div class="modal-content bg-dark text-white">
 
         <div class="modal-header">
-          <h4 class="title-modal">Country Information</h4>
+          <h4 class="modal-title" id="exampleModalCenterTitle">Country Information</h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <div class="modal-body">
           <div id="infoCard"></div>
-
         </div>
 
         <div class="modal-footer">
@@ -82,14 +79,14 @@
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
           <h4 class="modal-title">Currency Exchange</h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
         </div>
         <div class="modal-body">
-          <p id="currencyInfo">Select a country to load currency info.</p>
+          <p id="currencyInfo"></p>
           <div id="currencyConversion">
-
-            <label for="amountInput">Amount:</label>
-            <input type="number" id="amountInput" class="form-control" placeholder="e.g. 100" />
-            <button id="convertBtn" class="btn btn-primary mt-2">Convert to USD</button>
+            <label for="amountInput"></label>
+            <input type="number" id="amountInput" value= 100 class="form-control" placeholder="e.g. 100" />
             <p id="conversionResult" class="mt-2 text-success"></p>
           </div>
         </div>
@@ -107,19 +104,18 @@
 
   <button id="weatherBtn" class="custom-map-btn" data-bs-target="#weatherModal">
     <i class="fa-solid fa-temperature-half"></i> </button>
-
-
   <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog-scrollable modal-md  mx-auto">
+<div class="modal-dialog modal-md mx-auto">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
           <h4 class="modal-title">Weather Info</h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
         </div>
         <div class="modal-body">
           <div id="weather"></div>
-          <hr class="bg-secondary my-3">
+          <hr class="bg-secondary my-2">
           <div>
-            <h5 class="text-white mb-2">5-Day Forecast</h5>
             <div id="forecastBody"></div>
           </div>
         </div>
@@ -139,10 +135,12 @@
     <i class="fa-solid fa-book-open-reader"></i> </button>
 
   <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="wikiModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog-scrollable modal-md mx-auto">
+    <div class="modal-dialog modal-dialog-scrollable modal-md mx-auto">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
           <h4 class="modal-title">About This Country</h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
         </div>
         <div class="modal-body">
           <div id="wikiContent">Loading...</div>
@@ -157,10 +155,12 @@
 
   <!-- News Modal -->
   <div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog-scrollable modal-lg mx-auto">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg mx-auto">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
           <h4 class="modal-title">Latest News</h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
         </div>
         <div class="modal-body">
           <div id="newsContent">Loading news...</div>
@@ -190,7 +190,7 @@
   <script src="leaflet/leaflet.js"></script>
   <script src="libs/js/main.js" defer></script>
   <script src="libs/js/dayjs.min.js"></script>
-  <script src = "libs/js/numeral.min.js"></script>
+  <script src="libs/js/numeral.min.js"></script>
   <script src="libs/js/markerCluster.js"></script>
   <script src="libs/js/MarkerClusterGroup.js"></script>
   <script src="libs/js/MarkerClusterGroup.Refresh.js"></script>
