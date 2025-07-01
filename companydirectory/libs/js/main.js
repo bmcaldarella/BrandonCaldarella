@@ -142,21 +142,21 @@ $("#searchInp").on("keyup", function () {
 
 });
 
+// Refresh button functionality styling 
 
 $("#refreshBtn").click(function () {
 
-$("#refreshIcon").css({
-    "transition": "transform 0.3s ease",
-    "transform": "rotate(360deg)"
-});
-
-setTimeout(() => {
     $("#refreshIcon").css({
         "transition": "transform 0.3s ease",
-        "transform": "rotate(0deg)"
+        "transform": "rotate(360deg)"
     });
-}, 300);
 
+    setTimeout(() => {
+        $("#refreshIcon").css({
+            "transition": "transform 0.3s ease",
+            "transform": "rotate(0deg)"
+        });
+    }, 300);
 
 
 
@@ -213,12 +213,211 @@ $("#filterBtn").click(function () {
     // Open a modal of your own design that allows the user to apply a filter to the personnel table on either department or location
 
 });
+// ✅ Función para obtener departamentos
+function getDepartments(callback) {
+    $.ajax({
+        url: "libs/php/getAllDepartments.php",
+        type: "GET",
+        dataType: "json",
+        success: function (result) {
+            if (result.status.code === "200") {
+                callback(result.data);
+            } else {
+                console.warn("Error al obtener departamentos.");
+            }
+        },
+        error: function () {
+            alert("Error de red al cargar departamentos.");
+        }
+    });
+}
 
+// ✅ Función para obtener ubicaciones
+function getLocations(callback) {
+    $.ajax({
+        url: "libs/php/getAllLocation.php",
+        type: "GET",
+        dataType: "json",
+        success: function (result) {
+            if (result.status.code === "200") {
+                callback(result.data);
+            } else {
+                console.warn("Error al obtener ubicaciones.");
+            }
+        },
+        error: function () {
+            alert("Error de red al cargar ubicaciones.");
+        }
+    });
+}
+
+// ✅ Evento para mostrar el modal correcto y poblar selects
 $("#addBtn").click(function () {
+    if ($("#personnelBtn").hasClass("active")) {
+        getDepartments(function (departments) {
+            const $select = $("#addPersonnelDepartment").empty();
+            $select.append(`<option value="">Seleccione un departamento</option>`);
+            departments.forEach(d => {
+                $select.append(`<option value="${d.id}">${d.departmentName}</option>`);
+            });
+        });
 
-    // Replicate the logic of the refresh button click to open the add modal for the table that is currently on display
+        getLocations(function (locations) {
+            const $select = $("#addPersonnelLocation").empty();
+            $select.append(`<option value="">Seleccione una ubicación</option>`);
+            locations.forEach(l => {
+                $select.append(`<option value="${l.id}">${l.name}</option>`);
+            });
+        });
 
+        $("#addPersonnelModal").modal("show");
+
+    } else if ($("#departmentsBtn").hasClass("active")) {
+        getLocations(function (locations) {
+            const $select = $("#addDepartmentLocation").empty();
+            $select.append(`<option value="">Seleccione una ubicación</option>`);
+            locations.forEach(l => {
+                $select.append(`<option value="${l.id}">${l.name}</option>`);
+            });
+        });
+
+        $("#addDepartmentModal").modal("show");
+
+    } else if ($("#locationsBtn").hasClass("active")) {
+        $("#addLocationModal").modal("show");
+    }
 });
+
+// ✅ Evento de envío del formulario para agregar personal
+$("#addPersonnelForm").on("submit", function (e) {
+    e.preventDefault();
+
+    const firstName = $("#addPersonnelFirstName").val().trim();
+    const lastName = $("#addPersonnelLastName").val().trim();
+    const jobTitle = $("#addPersonnelJobTitle").val().trim();
+    const email = $("#addPersonnelEmailAddress").val().trim();
+    const departmentID = $("#addPersonnelDepartment").val();
+    const locationID = $("#addPersonnelLocation").val();
+
+    // Validaciones
+    if (!firstName || !lastName || !jobTitle || !email) {
+        alert("Por favor completá todos los campos obligatorios.");
+        return;
+    }
+
+    // Validar email simple
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Por favor ingresá un email válido.");
+        return;
+    }
+
+    // Validar selects
+    if (!departmentID || !locationID || isNaN(departmentID) || isNaN(locationID)) {
+        alert("Seleccioná un departamento y una ubicación válidos.");
+        return;
+    }
+
+    // Enviar datos si todo está OK
+    $.ajax({
+        url: "libs/php/insertPersonnel.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            firstName,
+            lastName,
+            jobTitle,
+            email,
+            departmentID,
+            locationID
+        },
+        success: function (result) {
+            if (result.status.code === "200") {
+                $("#addPersonnelModal").modal("hide");
+                $("#addPersonnelForm")[0].reset(); // 🧹 Limpia el formulario
+                refreshPersonnelTable();
+            } else {
+                alert("Error al agregar personal: " + result.status.description);
+            }
+        },
+        error: function (xhr) {
+            console.error("Error AJAX:", xhr.responseText);
+            console.error("AJAX Error:", error);
+            console.log("Status:", status);
+            console.log("Response Text:", xhr.responseText);
+            alert("Error de red al agregar personal.");
+        }
+    });
+});
+
+$("#addDepartmentForm").on("submit", function (e) {
+    e.preventDefault();
+
+    const departmentName = $("#addDepartmentName").val().trim();
+    const locationID = $("#addDepartmentLocation").val();
+
+    if (!departmentName || !locationID || isNaN(locationID)) {
+        alert("Por favor ingresá un nombre de departamento y seleccioná una ubicación válida.");
+        return;
+    }
+
+    $.ajax({
+        url: "libs/php/insertDepartment.php", // Asegurate que este archivo exista
+        type: "POST",
+        dataType: "json",
+        data: {
+            name: departmentName,
+            locationID
+        },
+        success: function (result) {
+            if (result.status.code === "200") {
+                $("#addDepartmentModal").modal("hide");
+                $("#addDepartmentForm")[0].reset(); // limpia el form
+                refreshDepartments(); // asegurate de tener esta función
+            } else {
+                alert("Error al agregar departamento: " + result.status.description);
+            }
+        },
+        error: function (xhr) {
+            console.error("Error AJAX:", xhr.responseText);
+            alert("Error de red al agregar departamento.");
+        }
+    });
+});
+
+$("#addLocationForm").on("submit", function (e) {
+    e.preventDefault();
+
+    const locationName = $("#addLocationName").val().trim();
+
+    if (!locationName) {
+        alert("Por favor ingresá un nombre de ubicación.");
+        return;
+    }
+
+    $.ajax({
+        url: "libs/php/insertLocation.php", // Asegurate que este archivo exista
+        type: "POST",
+        dataType: "json",
+        data: {
+            name: locationName
+        },
+        success: function (result) {
+            if (result.status.code === "200") {
+                $("#addLocationModal").modal("hide");
+                $("#addLocationForm")[0].reset(); // limpia el form
+                refreshLocations(); // asegurate de tener esta función
+            } else {
+                alert("Error al agregar ubicación: " + result.status.description);
+            }
+        },
+        error: function (xhr) {
+            console.error("Error AJAX:", xhr.responseText);
+            alert("Error de red al agregar ubicación.");
+        }
+    });
+});
+
 
 $("#personnelBtn").click(function () {
     // Activar tab pane
@@ -326,7 +525,7 @@ $("#editPersonnelForm").on("submit", function (e) {
 
 });
 
-//get informacion from database 
+//get information from database 
 function refreshPersonnelTable() {
     $.ajax({
         url: "libs/php/getAll.php",
@@ -478,6 +677,21 @@ $(document).ready(function () {
         // Cargar datos
         refreshLocations();
     });
+
+    $("#addBtn").click(function () {
+    const $icon = $("#addIcon");
+
+    $icon.css({
+        "display": "inline-block", // 👈 Necesario para transform
+        "transition": "transform 0.5s ease",
+        "transform": "rotate(360deg)"
+    });
+
+    setTimeout(() => {
+        $icon.css("transform", "rotate(0deg)");
+    }, 300);
+});
+
 
 
 });

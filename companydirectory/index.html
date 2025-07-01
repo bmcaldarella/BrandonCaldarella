@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="libs/vendor/bootstrap-5.3.7-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="libs/vendor/fontawesome-free-6.7.2-web/css/all.min.css">
     <link rel="icon" href="libs/vendor/src/favicon.svg">
-    
+
     <title>Company Directory</title>
 </head>
 
@@ -28,14 +28,141 @@
                     <div class="btn-group" role="group" aria-label="buttons">
 
                         <button id="refreshBtn" type="button" class="btn btn-primary">
-                            <i  id="refreshIcon" class="fa-solid fa-refresh fa-fw"></i>
+                            <i id="refreshIcon" class="fa-solid fa-refresh fa-fw"></i>
                         </button>
                         <button id="filterBtn" type="button" class="btn btn-primary">
                             <i class="fa-solid fa-filter fa-fw"></i>
                         </button>
                         <button id="addBtn" type="button" class="btn btn-primary">
-                            <i class="fa-solid fa-plus fa-fw"></i>
+                            <i id="addIcon" class="fa-solid fa-plus fa-fw"></i>
                         </button>
+               
+                        <!-- Add Personnel Modal -->
+                        <div id="addPersonnelModal" class="modal fade" tabindex="-1"
+                            aria-labelledby="addPersonnelModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="addPersonnelForm">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addPersonnelModalLabel">Add New Personnel</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="addPersonnelFirstName"
+                                                    placeholder="First name" required>
+                                                <label for="addPersonnelFirstName">First Name</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="addPersonnelLastName"
+                                                    placeholder="Last name" required>
+                                                <label for="addPersonnelLastName">Last Name</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="addPersonnelJobTitle"
+                                                    placeholder="Job title" required>
+                                                <label for="addPersonnelJobTitle">Job Title</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="addPersonnelEmailAddress"
+                                                    placeholder="Email address" required>
+                                                <label for="addPersonnelEmailAddress">Email Address</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" id="addPersonnelDepartment"
+                                                    required></select>
+                                                <label for="addPersonnelDepartment">Department</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" id="addPersonnelLocation" required></select>
+                                                <label for="addPersonnelLocation">Location</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Add Department Modal -->
+                        <div id="addDepartmentModal" class="modal fade" tabindex="-1"
+                            aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="addDepartmentForm">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="addDepartmentName"
+                                                    placeholder="Department name" required>
+                                                <label for="addDepartmentName">Department Name</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" id="addDepartmentLocation"
+                                                    required></select>
+                                                <label for="addDepartmentLocation">Location</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Add Location Modal -->
+                        <div id="addLocationModal" class="modal fade" tabindex="-1"
+                            aria-labelledby="addLocationModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="addLocationForm">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addLocationModalLabel">Add New Location</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="addLocationName"
+                                                    placeholder="Location name" required>
+                                                <label for="addLocationName">Location Name</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -255,6 +382,7 @@
 
     </div>
     <script src="libs/vendor/jquery/jquery.min.js"></script>
+    <script src="libs/vendor/bootstrap-5.3.7-dist/js/bootstrap.min.js"></script>
 
     <script src="libs/js/main.js"></script>
 
