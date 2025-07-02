@@ -31,12 +31,93 @@
                             <i id="refreshIcon" class="fa-solid fa-refresh fa-fw"></i>
                         </button>
                         <button id="filterBtn" type="button" class="btn btn-primary">
-                            <i class="fa-solid fa-filter fa-fw"></i>
+                            <i id="filterIcon" class="fa-solid fa-filter fa-fw"></i>
                         </button>
+
+                        <!--Moda Filter-->
                         <button id="addBtn" type="button" class="btn btn-primary">
                             <i id="addIcon" class="fa-solid fa-plus fa-fw"></i>
                         </button>
-               
+
+                        <!--Filter Personnel-->
+<div class="modal fade" id="personnelFilter" tabindex="-1" aria-labelledby="personnelFilterLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="personnelFilterLabel">Filter Personnel</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-floating mb-3">
+          <select class="form-select" id="filterPersonnelDepartment" required></select>
+          <label for="filterPersonnelDepartment">Department</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <select class="form-select" id="filterPersonnelLocation" required></select>
+          <label for="filterPersonnelLocation">Location</label>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="filterPersonnelApply" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+                        <!---Filter Departments-->
+<div class="modal fade" id="departmentFilter" tabindex="-1" aria-labelledby="departmentFilterLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="departmentFilterLabel">Filter Departments</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-floating mb-3">
+          <select class="form-select" id="filterDepartmentLocation" required></select>
+          <label for="filterDepartmentLocation">Location</label>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="filterDepartmentApply" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+                        
+
+
+                         <!---Filter Locations-->
+                        
+<div class="modal fade" id="locationFilter" tabindex="-1" aria-labelledby="locationFilterLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="locationFilterLabel">Filter Location</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-floating mb-3">
+          <select class="form-select" id="filterLocation" required></select>
+          <label for="filterLocation">Location</label>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="filterLocationApply" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
                         <!-- Add Personnel Modal -->
                         <div id="addPersonnelModal" class="modal fade" tabindex="-1"
                             aria-labelledby="addPersonnelModalLabel" aria-hidden="true">

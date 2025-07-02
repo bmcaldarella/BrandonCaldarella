@@ -209,10 +209,201 @@ $("#refreshBtn").click(function () {
 });
 
 $("#filterBtn").click(function () {
+    const $icon = $("#filterIcon");
 
-    // Open a modal of your own design that allows the user to apply a filter to the personnel table on either department or location
+    $icon.css({
+        "display": "inline-block",
+        "transition": "transform 0.5s ease",
+        "transform": "rotate(360deg)"
+    });
 
+    setTimeout(() => {
+        $icon.css("transform", "rotate(0deg)");
+    }, 300);
+
+    if ($("#personnelBtn").hasClass("active")) {
+        getDepartments(function (departments) {
+            const $deptSelect = $("#filterPersonnelDepartment").empty();
+            $deptSelect.append(`<option value="">All Departments</option>`);
+            departments.forEach(d => {
+                $deptSelect.append(`<option value="${d.id}">${d.departmentName}</option>`);
+            });
+        });
+
+        getLocations(function (locations) {
+            const $locSelect = $("#filterPersonnelLocation").empty();
+            $locSelect.append(`<option value="">All Locations</option>`);
+            locations.forEach(l => {
+                $locSelect.append(`<option value="${l.id}">${l.name}</option>`);
+            });
+        });
+
+        $("#personnelFilter").modal("show");
+
+    } else if ($("#departmentsBtn").hasClass("active")) {
+        getLocations(function (locations) {
+            const $select = $("#filterDepartmentLocation").empty();
+            $select.append(`<option value="">All Locations</option>`);
+            locations.forEach(l => {
+                $select.append(`<option value="${l.id}">${l.name}</option>`);
+            });
+        });
+
+        $("#departmentFilter").modal("show");
+
+    } else if ($("#locationsBtn").hasClass("active")) {
+        getLocations(function (locations) {
+            const $select = $("#filterLocation").empty(); // Asegurate que el ID sea correcto
+            $select.append(`<option value="">All Locations</option>`);
+            locations.forEach(l => {
+                $select.append(`<option value="${l.id}">${l.name}</option>`);
+            });
+        });
+
+        $("#locationFilter").modal("show");
+    }
 });
+
+$("#filterPersonnelApply").click(function () {
+    const departmentID = $("#filterPersonnelDepartment").val();
+    const locationID = $("#filterPersonnelLocation").val();
+    console.log("🔍 Filtro aplicado:", departmentID, locationID);
+
+
+    $.ajax({
+        url: "libs/php/filterPersonnel.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            departmentID,
+            locationID
+        },
+        success: function (result) {
+            const tableBody = $("#personnelTableBody").empty();
+
+            if (result.status.code === "200" && result.data.length > 0) {
+                result.data.forEach(person => {
+                    const row = `
+                        <tr>
+                          <td>${person.firstName}, ${person.lastName}</td>
+                          <td>${person.department}</td>
+                          <td>${person.location}</td>
+                          <td>${person.email}</td>
+                          <td class="text-end">
+                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPersonnelModal">
+                  <i class="fa-solid fa-pencil fa-fw"></i>
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal">
+                  <i class="fa-solid fa-trash fa-fw"></i>
+                </button>
+
+                          </td>
+                        </tr>`;
+                    tableBody.append(row);
+                });
+            } else {
+                    const tableError = `
+                        <h3 class="text-center mt-5 opacity-75">Search not found</h3>                      `;
+                    tableBody.append(tableError);
+                }
+
+            $("#personnelFilter").modal("hide");
+        },
+        error: function () {
+            alert("Error filtrando personal");
+        }
+    });
+});
+
+$("#filterDepartmentApply").click(function () {
+    const locationID = $("#filterDepartmentLocation").val();
+
+    $.ajax({
+        url: "libs/php/filterDepartments.php",
+        type: "POST",
+        dataType: "json",
+        data: { locationID },
+        success: function (result) {
+            const table = $("#departmentTableBody").empty();
+
+            if (result.status.code === "200" && result.data.length > 0) {
+                result.data.forEach(dept => {
+                    const row = `
+                        <tr>
+                            <td>${dept.departmentName}</td>
+                            <td>${dept.locationName}</td>
+                            <td class="text-end">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPersonnelModal">
+                            <i class="fa-solid fa-pencil fa-fw"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal">
+                            <i class="fa-solid fa-trash fa-fw"></i>
+                            </button>
+
+                                
+                            </td>
+                        </tr>`;
+                    table.append(row);
+                });
+            } else {
+                    const tableError = `
+                        <h3 class="text-center mt-5 opacity-75">Search not found</h3>                      `;
+                    tableBody.append(tableError);
+                }
+
+            $("#departmentFilter").modal("hide");
+        },
+        error: function () {
+            alert("Error filtrando departamentos");
+        }
+    });
+});
+
+$("#filterLocationApply").click(function () {
+    const locationID = $("#filterLocation").val();
+
+    $.ajax({
+        url: "libs/php/filterLocations.php",
+        type: "POST",
+        dataType: "json",
+        data: { locationID },
+        success: function (result) {
+            const table = $("#locationTableBody").empty();
+
+            if (result.status.code === "200" && result.data.length > 0) {
+                result.data.forEach(loc => {
+                    const row = `
+                        <tr>
+                            <td>${loc.name}</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPersonnelModal">
+                                <i class="fa-solid fa-pencil fa-fw"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal">
+                                <i class="fa-solid fa-trash fa-fw"></i>
+                                </button>
+
+                            </td>
+                        </tr>`;
+                    table.append(row);
+                });
+            }else {
+                    const tableError = `
+                        <h3 class="text-center mt-5 opacity-75">Search not found</h3>                      `;
+                    tableBody.append(tableError);
+                }
+
+            $("#locationFilter").modal("hide");
+        },
+        error: function () {
+            alert("Error filtrando ubicaciones");
+        }
+    });
+});
+
+
+
+
 // ✅ Función para obtener departamentos
 function getDepartments(callback) {
     $.ajax({
@@ -679,18 +870,18 @@ $(document).ready(function () {
     });
 
     $("#addBtn").click(function () {
-    const $icon = $("#addIcon");
+        const $icon = $("#addIcon");
 
-    $icon.css({
-        "display": "inline-block", // 👈 Necesario para transform
-        "transition": "transform 0.5s ease",
-        "transform": "rotate(360deg)"
+        $icon.css({
+            "display": "inline-block",
+            "transition": "transform 0.5s ease",
+            "transform": "rotate(360deg)"
+        });
+
+        setTimeout(() => {
+            $icon.css("transform", "rotate(0deg)");
+        }, 300);
     });
-
-    setTimeout(() => {
-        $icon.css("transform", "rotate(0deg)");
-    }, 300);
-});
 
 
 
